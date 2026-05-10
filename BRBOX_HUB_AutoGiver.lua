@@ -1,5 +1,5 @@
 -- ============================================
--- BRBOX HUB - Auto Giver Edition v2
+-- BRBOX HUB - Auto Giver Edition v3 (Clean UI)
 -- Script para Delta Executor / Synapse X / KRNL / Fluxus
 -- Features: Auto All + Kill Aura + Steal All + Delete Security
 -- ============================================
@@ -36,8 +36,8 @@ screenGui.Parent = playerGui
 -- Frame principal (arrastavel)
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.new(0, 340, 0, 440)
-mainFrame.Position = UDim2.new(0.5, -170, 0.5, -220)
+mainFrame.Size = UDim2.new(0, 340, 0, 380)
+mainFrame.Position = UDim2.new(0.5, -170, 0.5, -190)
 mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
 mainFrame.BorderSizePixel = 0
 mainFrame.Parent = screenGui
@@ -112,7 +112,7 @@ subTitle.Name = "SubTitle"
 subTitle.Size = UDim2.new(1, -120, 0, 14)
 subTitle.Position = UDim2.new(0, 40, 0, 24)
 subTitle.BackgroundTransparency = 1
-subTitle.Text = "Auto Giver Edition v2"
+subTitle.Text = "Auto Giver Edition v3"
 subTitle.TextColor3 = Color3.fromRGB(180, 180, 180)
 subTitle.TextSize = 10
 subTitle.Font = Enum.Font.Gotham
@@ -148,16 +148,30 @@ closeButton.Parent = titleBar
 -- ============================================
 local auraFrame = Instance.new("Frame")
 auraFrame.Name = "AuraFrame"
-auraFrame.Size = UDim2.new(1, 0, 0, 360)
+auraFrame.Size = UDim2.new(1, 0, 0, 300)
 auraFrame.Position = UDim2.new(0, 0, 0, 48)
 auraFrame.BackgroundTransparency = 1
 auraFrame.Visible = true
 auraFrame.Parent = mainFrame
 
+-- Titulo da funcao
+local auraTitle = Instance.new("TextLabel")
+auraTitle.Name = "AuraTitle"
+auraTitle.Size = UDim2.new(0.9, 0, 0, 22)
+auraTitle.Position = UDim2.new(0.05, 0, 0, 5)
+auraTitle.BackgroundTransparency = 1
+auraTitle.Text = "KILL AURA"
+auraTitle.TextColor3 = Color3.fromRGB(255, 80, 80)
+auraTitle.TextSize = 16
+auraTitle.Font = Enum.Font.GothamBold
+auraTitle.TextXAlignment = Enum.TextXAlignment.Center
+auraTitle.Parent = auraFrame
+
+-- Botao Toggle
 local auraToggle = Instance.new("TextButton")
 auraToggle.Name = "AuraToggle"
 auraToggle.Size = UDim2.new(0.9, 0, 0, 45)
-auraToggle.Position = UDim2.new(0.05, 0, 0, 10)
+auraToggle.Position = UDim2.new(0.05, 0, 0, 35)
 auraToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
 auraToggle.Text = "OFF"
 auraToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -169,34 +183,11 @@ local auraToggleCorner = Instance.new("UICorner")
 auraToggleCorner.CornerRadius = UDim.new(0, 12)
 auraToggleCorner.Parent = auraToggle
 
-local auraModeLabel = Instance.new("TextLabel")
-auraModeLabel.Name = "ModeLabel"
-auraModeLabel.Size = UDim2.new(0.9, 0, 0, 16)
-auraModeLabel.Position = UDim2.new(0.05, 0, 0, 60)
-auraModeLabel.BackgroundTransparency = 1
-auraModeLabel.Text = "Mode: None"
-auraModeLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
-auraModeLabel.TextSize = 10
-auraModeLabel.Font = Enum.Font.Gotham
-auraModeLabel.TextXAlignment = Enum.TextXAlignment.Center
-auraModeLabel.Parent = auraFrame
-
-local auraStatus = Instance.new("TextLabel")
-auraStatus.Name = "Status"
-auraStatus.Size = UDim2.new(0.9, 0, 0, 16)
-auraStatus.Position = UDim2.new(0.05, 0, 0, 78)
-auraStatus.BackgroundTransparency = 1
-auraStatus.Text = "Waiting..."
-auraStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-auraStatus.TextSize = 10
-auraStatus.Font = Enum.Font.Gotham
-auraStatus.TextXAlignment = Enum.TextXAlignment.Center
-auraStatus.Parent = auraFrame
-
+-- Lista de players
 local whitelistLabel = Instance.new("TextLabel")
 whitelistLabel.Name = "WhitelistLabel"
 whitelistLabel.Size = UDim2.new(0.9, 0, 0, 18)
-whitelistLabel.Position = UDim2.new(0.05, 0, 0, 100)
+whitelistLabel.Position = UDim2.new(0.05, 0, 0, 90)
 whitelistLabel.BackgroundTransparency = 1
 whitelistLabel.Text = "Protected Players:"
 whitelistLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -208,7 +199,7 @@ whitelistLabel.Parent = auraFrame
 local scrollFrame = Instance.new("ScrollingFrame")
 scrollFrame.Name = "PlayerList"
 scrollFrame.Size = UDim2.new(0.9, 0, 0, 160)
-scrollFrame.Position = UDim2.new(0.05, 0, 0, 122)
+scrollFrame.Position = UDim2.new(0.05, 0, 0, 112)
 scrollFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
 scrollFrame.BorderSizePixel = 0
 scrollFrame.ScrollBarThickness = 5
@@ -226,38 +217,26 @@ listLayout.Padding = UDim.new(0, 3)
 listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 listLayout.Parent = scrollFrame
 
-local auraInfo = Instance.new("TextLabel")
-auraInfo.Name = "Info"
-auraInfo.Size = UDim2.new(0.9, 0, 0, 20)
-auraInfo.Position = UDim2.new(0.05, 0, 0, 290)
-auraInfo.BackgroundTransparency = 1
-auraInfo.Text = "Enable and equip a weapon"
-auraInfo.TextColor3 = Color3.fromRGB(120, 120, 120)
-auraInfo.TextSize = 10
-auraInfo.Font = Enum.Font.Gotham
-auraInfo.TextXAlignment = Enum.TextXAlignment.Center
-auraInfo.TextWrapped = true
-auraInfo.Parent = auraFrame
-
 -- ============================================
--- TELA 2: AUTO ALL (1 botao faz tudo)
+-- TELA 2: AUTO ALL
 -- ============================================
 local farmFrame = Instance.new("Frame")
 farmFrame.Name = "FarmFrame"
-farmFrame.Size = UDim2.new(1, 0, 0, 360)
+farmFrame.Size = UDim2.new(1, 0, 0, 300)
 farmFrame.Position = UDim2.new(0, 0, 0, 48)
 farmFrame.BackgroundTransparency = 1
 farmFrame.Visible = false
 farmFrame.Parent = mainFrame
 
+-- Titulo da funcao
 local farmTitle = Instance.new("TextLabel")
 farmTitle.Name = "FarmTitle"
-farmTitle.Size = UDim2.new(0.9, 0, 0, 30)
+farmTitle.Size = UDim2.new(0.9, 0, 0, 22)
 farmTitle.Position = UDim2.new(0.05, 0, 0, 5)
 farmTitle.BackgroundTransparency = 1
-farmTitle.Text = "Auto All"
+farmTitle.Text = "AUTO ALL"
 farmTitle.TextColor3 = Color3.fromRGB(0, 200, 255)
-farmTitle.TextSize = 20
+farmTitle.TextSize = 16
 farmTitle.Font = Enum.Font.GothamBold
 farmTitle.TextXAlignment = Enum.TextXAlignment.Center
 farmTitle.Parent = farmFrame
@@ -266,7 +245,7 @@ farmTitle.Parent = farmFrame
 local autoAllToggle = Instance.new("TextButton")
 autoAllToggle.Name = "AutoAllToggle"
 autoAllToggle.Size = UDim2.new(0.9, 0, 0, 50)
-autoAllToggle.Position = UDim2.new(0.05, 0, 0, 45)
+autoAllToggle.Position = UDim2.new(0.05, 0, 0, 35)
 autoAllToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
 autoAllToggle.Text = "AUTO ALL: OFF"
 autoAllToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -278,49 +257,26 @@ local autoAllCorner = Instance.new("UICorner")
 autoAllCorner.CornerRadius = UDim.new(0, 12)
 autoAllCorner.Parent = autoAllToggle
 
--- Status
-local autoAllStatus = Instance.new("TextLabel")
-autoAllStatus.Size = UDim2.new(0.9, 0, 0, 20)
-autoAllStatus.Position = UDim2.new(0.05, 0, 0, 105)
-autoAllStatus.BackgroundTransparency = 1
-autoAllStatus.Text = "Money: 0 | Items: 0"
-autoAllStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-autoAllStatus.TextSize = 12
-autoAllStatus.Font = Enum.Font.Gotham
-autoAllStatus.TextXAlignment = Enum.TextXAlignment.Center
-autoAllStatus.Parent = farmFrame
-
-local farmInfo = Instance.new("TextLabel")
-farmInfo.Size = UDim2.new(0.9, 0, 0, 80)
-farmInfo.Position = UDim2.new(0.05, 0, 0, 140)
-farmInfo.BackgroundTransparency = 1
-farmInfo.Text = "This button does EVERYTHING:\n• Collects money from Giver\n• Clicks miner (ClickDetector)\n• Buys red buttons (ignores green)\nAll automatically in one loop!"
-farmInfo.TextColor3 = Color3.fromRGB(120, 120, 120)
-farmInfo.TextSize = 10
-farmInfo.Font = Enum.Font.Gotham
-farmInfo.TextWrapped = true
-farmInfo.TextXAlignment = Enum.TextXAlignment.Center
-farmInfo.Parent = farmFrame
-
 -- ============================================
 -- TELA 3: STEAL ALL + DELETE SECURITY
 -- ============================================
 local stealFrame = Instance.new("Frame")
 stealFrame.Name = "StealFrame"
-stealFrame.Size = UDim2.new(1, 0, 0, 360)
+stealFrame.Size = UDim2.new(1, 0, 0, 300)
 stealFrame.Position = UDim2.new(0, 0, 0, 48)
 stealFrame.BackgroundTransparency = 1
 stealFrame.Visible = false
 stealFrame.Parent = mainFrame
 
+-- Titulo da funcao
 local stealTitle = Instance.new("TextLabel")
 stealTitle.Name = "StealTitle"
-stealTitle.Size = UDim2.new(0.9, 0, 0, 30)
-stealTitle.Position = UDim2.new(0.05, 0, 0, 10)
+stealTitle.Size = UDim2.new(0.9, 0, 0, 22)
+stealTitle.Position = UDim2.new(0.05, 0, 0, 5)
 stealTitle.BackgroundTransparency = 1
-stealTitle.Text = "Steal & Destroy"
+stealTitle.Text = "STEAL & DESTROY"
 stealTitle.TextColor3 = Color3.fromRGB(255, 150, 0)
-stealTitle.TextSize = 20
+stealTitle.TextSize = 16
 stealTitle.Font = Enum.Font.GothamBold
 stealTitle.TextXAlignment = Enum.TextXAlignment.Center
 stealTitle.Parent = stealFrame
@@ -328,8 +284,8 @@ stealTitle.Parent = stealFrame
 -- Botao Steal All
 local stealButton = Instance.new("TextButton")
 stealButton.Name = "StealButton"
-stealButton.Size = UDim2.new(0.8, 0, 0, 50)
-stealButton.Position = UDim2.new(0.1, 0, 0, 55)
+stealButton.Size = UDim2.new(0.9, 0, 0, 50)
+stealButton.Position = UDim2.new(0.05, 0, 0, 35)
 stealButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 stealButton.Text = "STEAL ALL SWORDS"
 stealButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -344,8 +300,8 @@ stealBtnCorner.Parent = stealButton
 -- Botao Delete Security
 local deleteSecurityButton = Instance.new("TextButton")
 deleteSecurityButton.Name = "DeleteSecurity"
-deleteSecurityButton.Size = UDim2.new(0.8, 0, 0, 50)
-deleteSecurityButton.Position = UDim2.new(0.1, 0, 0, 120)
+deleteSecurityButton.Size = UDim2.new(0.9, 0, 0, 50)
+deleteSecurityButton.Position = UDim2.new(0.05, 0, 0, 95)
 deleteSecurityButton.BackgroundColor3 = Color3.fromRGB(180, 30, 180)
 deleteSecurityButton.Text = "DELETE ALL SECURITY"
 deleteSecurityButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -356,31 +312,6 @@ deleteSecurityButton.Parent = stealFrame
 local deleteSecCorner = Instance.new("UICorner")
 deleteSecCorner.CornerRadius = UDim.new(0, 12)
 deleteSecCorner.Parent = deleteSecurityButton
-
--- Resultados
-local stealResult = Instance.new("TextLabel")
-stealResult.Size = UDim2.new(0.9, 0, 0, 40)
-stealResult.Position = UDim2.new(0.05, 0, 0, 185)
-stealResult.BackgroundTransparency = 1
-stealResult.Text = "Click buttons above to execute"
-stealResult.TextColor3 = Color3.fromRGB(150, 150, 150)
-stealResult.TextSize = 11
-stealResult.Font = Enum.Font.Gotham
-stealResult.TextWrapped = true
-stealResult.TextXAlignment = Enum.TextXAlignment.Center
-stealResult.Parent = stealFrame
-
-local stealInfo = Instance.new("TextLabel")
-stealInfo.Size = UDim2.new(0.9, 0, 0, 60)
-stealInfo.Position = UDim2.new(0.05, 0, 0, 240)
-stealInfo.BackgroundTransparency = 1
-stealInfo.Text = "Steal All: Activates all Giver parts from every base\nDelete Security: Removes all Lasers from OwnerOnlyDoor in every base"
-stealInfo.TextColor3 = Color3.fromRGB(100, 100, 100)
-stealInfo.TextSize = 10
-stealInfo.Font = Enum.Font.Gotham
-stealInfo.TextWrapped = true
-stealInfo.TextXAlignment = Enum.TextXAlignment.Center
-stealInfo.Parent = stealFrame
 
 -- ============================================
 -- BOTAO CASINHA (CASA) NO RODAPE
@@ -533,8 +464,6 @@ local function autoAll()
         end
         task.wait(0.1)
     end
-
-    autoAllStatus.Text = "Money: " .. totalMoney .. " | Items: " .. itemsBought
 end
 
 -- ============================================
@@ -676,18 +605,13 @@ local function startAura(tool)
     if not tool then return end
     local attackType, attackObj = detectAttackType(tool)
     if attackType == "none" then
-        auraStatus.Text = "No attack system detected"
-        auraStatus.TextColor3 = Color3.fromRGB(255, 150, 0)
-        auraModeLabel.Text = "Mode: None"
+        auraToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
+        auraToggle.Text = "OFF"
         return
     end
     auraTool = tool
     auraMode = attackType
     if attackType == "touch" then
-        auraModeLabel.Text = "Mode: Touch"
-        auraStatus.Text = "Aura Active!"
-        auraStatus.TextColor3 = Color3.fromRGB(0, 255, 100)
-        auraInfo.Text = "Attacking: " .. tool.Name
         if auraConnection then auraConnection:Disconnect() end
         auraConnection = RunService.Heartbeat:Connect(function()
             if killAuraActive and auraTool then
@@ -699,18 +623,12 @@ local function startAura(tool)
                         if h then attackWithTouch(h) end
                     else
                         auraTool = nil
-                        auraStatus.Text = "Weapon unequipped"
-                        auraStatus.TextColor3 = Color3.fromRGB(255, 150, 0)
                         if auraConnection then auraConnection:Disconnect() auraConnection = nil end
                     end
                 end
             end
         end)
     elseif attackType == "event" then
-        auraModeLabel.Text = "Mode: Event (" .. attackObj.Name .. ")"
-        auraStatus.Text = "Event detected!"
-        auraStatus.TextColor3 = Color3.fromRGB(0, 200, 255)
-        auraInfo.Text = "Use weapon click to attack"
         if auraConnection then auraConnection:Disconnect() end
         auraConnection = RunService.Heartbeat:Connect(function()
             if killAuraActive and auraTool and auraMode == "event" then
@@ -720,9 +638,6 @@ local function startAura(tool)
                     if not equipped then
                         auraTool = nil
                         auraMode = "none"
-                        auraStatus.Text = "Weapon unequipped"
-                        auraStatus.TextColor3 = Color3.fromRGB(255, 150, 0)
-                        auraModeLabel.Text = "Mode: None"
                         if auraConnection then auraConnection:Disconnect() auraConnection = nil end
                     end
                 end
@@ -742,10 +657,6 @@ local function deactivateAura()
     auraToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
     auraToggle.Text = "OFF"
     glow.Color = Color3.fromRGB(255, 50, 50)
-    auraStatus.Text = "Waiting..."
-    auraStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-    auraModeLabel.Text = "Mode: None"
-    auraInfo.Text = "Enable and equip a weapon"
 end
 
 local function monitorCharacter()
@@ -802,8 +713,6 @@ autoAllToggle.MouseButton1Click:Connect(function()
     if autoAllActive then
         autoAllToggle.BackgroundColor3 = Color3.fromRGB(0, 180, 60)
         autoAllToggle.Text = "AUTO ALL: ON"
-        autoAllStatus.Text = "Running..."
-        autoAllStatus.TextColor3 = Color3.fromRGB(0, 255, 100)
         if autoAllConnection then autoAllConnection:Disconnect() end
         autoAllConnection = RunService.Heartbeat:Connect(function()
             if autoAllActive then
@@ -814,8 +723,6 @@ autoAllToggle.MouseButton1Click:Connect(function()
     else
         autoAllToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
         autoAllToggle.Text = "AUTO ALL: OFF"
-        autoAllStatus.Text = "Money: " .. totalMoney .. " | Items: " .. itemsBought
-        autoAllStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
         if autoAllConnection then autoAllConnection:Disconnect() autoAllConnection = nil end
     end
 end)
@@ -825,19 +732,7 @@ end)
 -- ============================================
 stealButton.MouseButton1Click:Connect(function()
     stealButton.BackgroundColor3 = Color3.fromRGB(100, 40, 100)
-    stealResult.Text = "Stealing..."
-    stealResult.TextColor3 = Color3.fromRGB(255, 200, 0)
-
     local total, activated, bases = stealAll()
-
-    if total > 0 then
-        stealResult.Text = "Swords: " .. total .. " | Activated: " .. activated .. " | Bases: " .. bases
-        stealResult.TextColor3 = Color3.fromRGB(0, 255, 100)
-    else
-        stealResult.Text = "No swords found!"
-        stealResult.TextColor3 = Color3.fromRGB(255, 100, 100)
-    end
-
     task.wait(0.3)
     stealButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 end)
@@ -847,19 +742,7 @@ end)
 -- ============================================
 deleteSecurityButton.MouseButton1Click:Connect(function()
     deleteSecurityButton.BackgroundColor3 = Color3.fromRGB(100, 40, 100)
-    stealResult.Text = "Deleting security..."
-    stealResult.TextColor3 = Color3.fromRGB(255, 200, 0)
-
     local deleted = deleteAllSecurity()
-
-    if deleted > 0 then
-        stealResult.Text = "Deleted " .. deleted .. " laser security systems!"
-        stealResult.TextColor3 = Color3.fromRGB(0, 255, 100)
-    else
-        stealResult.Text = "No laser security found!"
-        stealResult.TextColor3 = Color3.fromRGB(255, 100, 100)
-    end
-
     task.wait(0.3)
     deleteSecurityButton.BackgroundColor3 = Color3.fromRGB(180, 30, 180)
 end)
@@ -872,9 +755,6 @@ auraToggle.MouseButton1Click:Connect(function()
     if killAuraActive then
         auraToggle.BackgroundColor3 = Color3.fromRGB(255, 150, 0)
         auraToggle.Text = "WAITING..."
-        auraStatus.Text = "Active! Equip a weapon..."
-        auraStatus.TextColor3 = Color3.fromRGB(255, 200, 0)
-        auraInfo.Text = "Equip a weapon to start"
         monitorCharacter()
         player.CharacterAdded:Connect(function(char)
             task.wait(0.5)
@@ -1052,7 +932,5 @@ end)
 -- INICIALIZAR
 -- ============================================
 updatePlayerList()
-print("BRBOX HUB - Auto Giver Edition v2 loaded!")
-print("Screens: Kill Aura -> Auto All -> Steal & Destroy")
-print("Auto All: 1 button does Giver + Clicker + Build")
-print("Delete Security: Removes Lasers from OwnerOnlyDoor")
+print("BRBOX HUB - Auto Giver Edition v3 (Clean) loaded!")
+print("Clean UI - No status text, just buttons and titles")
