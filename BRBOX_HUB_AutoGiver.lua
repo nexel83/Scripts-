@@ -1,7 +1,7 @@
 -- ============================================
--- BRBOX HUB - Auto Giver Edition
+-- BRBOX HUB - Auto Giver Edition v2
 -- Script para Delta Executor / Synapse X / KRNL / Fluxus
--- Features: Auto Giver + Auto Clicker + Auto Build + Kill Aura + Steal All
+-- Features: Auto All + Kill Aura + Steal All + Delete Security
 -- ============================================
 
 local Players = game:GetService("Players")
@@ -14,9 +14,7 @@ local TweenService = game:GetService("TweenService")
 -- ============================================
 -- VARIAVEIS DE CONTROLE
 -- ============================================
-local autoGiverActive = false
-local autoClickerActive = false
-local autoBuildActive = false
+local autoAllActive = false
 local killAuraActive = false
 local auraTool = nil
 local auraConnection = nil
@@ -114,7 +112,7 @@ subTitle.Name = "SubTitle"
 subTitle.Size = UDim2.new(1, -120, 0, 14)
 subTitle.Position = UDim2.new(0, 40, 0, 24)
 subTitle.BackgroundTransparency = 1
-subTitle.Text = "Auto Giver Edition"
+subTitle.Text = "Auto Giver Edition v2"
 subTitle.TextColor3 = Color3.fromRGB(180, 180, 180)
 subTitle.TextSize = 10
 subTitle.Font = Enum.Font.Gotham
@@ -242,7 +240,7 @@ auraInfo.TextWrapped = true
 auraInfo.Parent = auraFrame
 
 -- ============================================
--- TELA 2: AUTO FARM (Giver + Clicker + Build)
+-- TELA 2: AUTO ALL (1 botao faz tudo)
 -- ============================================
 local farmFrame = Instance.new("Frame")
 farmFrame.Name = "FarmFrame"
@@ -257,89 +255,46 @@ farmTitle.Name = "FarmTitle"
 farmTitle.Size = UDim2.new(0.9, 0, 0, 30)
 farmTitle.Position = UDim2.new(0.05, 0, 0, 5)
 farmTitle.BackgroundTransparency = 1
-farmTitle.Text = "Auto Farm"
+farmTitle.Text = "Auto All"
 farmTitle.TextColor3 = Color3.fromRGB(0, 200, 255)
 farmTitle.TextSize = 20
 farmTitle.Font = Enum.Font.GothamBold
 farmTitle.TextXAlignment = Enum.TextXAlignment.Center
 farmTitle.Parent = farmFrame
 
--- Auto Giver Toggle
-local giverToggle = Instance.new("TextButton")
-giverToggle.Name = "GiverToggle"
-giverToggle.Size = UDim2.new(0.9, 0, 0, 40)
-giverToggle.Position = UDim2.new(0.05, 0, 0, 45)
-giverToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
-giverToggle.Text = "Auto Giver: OFF"
-giverToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-giverToggle.TextSize = 14
-giverToggle.Font = Enum.Font.GothamBold
-giverToggle.Parent = farmFrame
+-- Um botao so que faz TUDO
+local autoAllToggle = Instance.new("TextButton")
+autoAllToggle.Name = "AutoAllToggle"
+autoAllToggle.Size = UDim2.new(0.9, 0, 0, 50)
+autoAllToggle.Position = UDim2.new(0.05, 0, 0, 45)
+autoAllToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
+autoAllToggle.Text = "AUTO ALL: OFF"
+autoAllToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+autoAllToggle.TextSize = 16
+autoAllToggle.Font = Enum.Font.GothamBold
+autoAllToggle.Parent = farmFrame
 
-local giverCorner = Instance.new("UICorner")
-giverCorner.CornerRadius = UDim.new(0, 10)
-giverCorner.Parent = giverToggle
+local autoAllCorner = Instance.new("UICorner")
+autoAllCorner.CornerRadius = UDim.new(0, 12)
+autoAllCorner.Parent = autoAllToggle
 
--- Auto Clicker Toggle
-local clickerToggle = Instance.new("TextButton")
-clickerToggle.Name = "ClickerToggle"
-clickerToggle.Size = UDim2.new(0.9, 0, 0, 40)
-clickerToggle.Position = UDim2.new(0.05, 0, 0, 95)
-clickerToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
-clickerToggle.Text = "Auto Clicker: OFF"
-clickerToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-clickerToggle.TextSize = 14
-clickerToggle.Font = Enum.Font.GothamBold
-clickerToggle.Parent = farmFrame
-
-local clickerCorner = Instance.new("UICorner")
-clickerCorner.CornerRadius = UDim.new(0, 10)
-clickerCorner.Parent = clickerToggle
-
--- Auto Build Toggle
-local buildToggle = Instance.new("TextButton")
-buildToggle.Name = "BuildToggle"
-buildToggle.Size = UDim2.new(0.9, 0, 0, 40)
-buildToggle.Position = UDim2.new(0.05, 0, 0, 145)
-buildToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
-buildToggle.Text = "Auto Build: OFF"
-buildToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-buildToggle.TextSize = 14
-buildToggle.Font = Enum.Font.GothamBold
-buildToggle.Parent = farmFrame
-
-local buildCorner = Instance.new("UICorner")
-buildCorner.CornerRadius = UDim.new(0, 10)
-buildCorner.Parent = buildToggle
-
--- Status labels
-local giverStatus = Instance.new("TextLabel")
-giverStatus.Size = UDim2.new(0.9, 0, 0, 18)
-giverStatus.Position = UDim2.new(0.05, 0, 0, 195)
-giverStatus.BackgroundTransparency = 1
-giverStatus.Text = "Money collected: 0"
-giverStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-giverStatus.TextSize = 11
-giverStatus.Font = Enum.Font.Gotham
-giverStatus.TextXAlignment = Enum.TextXAlignment.Center
-giverStatus.Parent = farmFrame
-
-local buildStatus = Instance.new("TextLabel")
-buildStatus.Size = UDim2.new(0.9, 0, 0, 18)
-buildStatus.Position = UDim2.new(0.05, 0, 0, 215)
-buildStatus.BackgroundTransparency = 1
-buildStatus.Text = "Items bought: 0"
-buildStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-buildStatus.TextSize = 11
-buildStatus.Font = Enum.Font.Gotham
-buildStatus.TextXAlignment = Enum.TextXAlignment.Center
-buildStatus.Parent = farmFrame
+-- Status
+local autoAllStatus = Instance.new("TextLabel")
+autoAllStatus.Size = UDim2.new(0.9, 0, 0, 20)
+autoAllStatus.Position = UDim2.new(0.05, 0, 0, 105)
+autoAllStatus.BackgroundTransparency = 1
+autoAllStatus.Text = "Money: 0 | Items: 0"
+autoAllStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
+autoAllStatus.TextSize = 12
+autoAllStatus.Font = Enum.Font.Gotham
+autoAllStatus.TextXAlignment = Enum.TextXAlignment.Center
+autoAllStatus.Parent = farmFrame
 
 local farmInfo = Instance.new("TextLabel")
-farmInfo.Size = UDim2.new(0.9, 0, 0, 60)
-farmInfo.Position = UDim2.new(0.05, 0, 0, 245)
+farmInfo.Size = UDim2.new(0.9, 0, 0, 80)
+farmInfo.Position = UDim2.new(0.05, 0, 0, 140)
 farmInfo.BackgroundTransparency = 1
-farmInfo.Text = "Auto Giver: Clicks money giver via TouchInterest\nAuto Clicker: Clicks miner via ClickDetector\nAuto Build: Buys red buttons only (ignores green)"
+farmInfo.Text = "This button does EVERYTHING:\n• Collects money from Giver\n• Clicks miner (ClickDetector)\n• Buys red buttons (ignores green)\nAll automatically in one loop!"
 farmInfo.TextColor3 = Color3.fromRGB(120, 120, 120)
 farmInfo.TextSize = 10
 farmInfo.Font = Enum.Font.Gotham
@@ -348,7 +303,7 @@ farmInfo.TextXAlignment = Enum.TextXAlignment.Center
 farmInfo.Parent = farmFrame
 
 -- ============================================
--- TELA 3: STEAL ALL
+-- TELA 3: STEAL ALL + DELETE SECURITY
 -- ============================================
 local stealFrame = Instance.new("Frame")
 stealFrame.Name = "StealFrame"
@@ -363,56 +318,63 @@ stealTitle.Name = "StealTitle"
 stealTitle.Size = UDim2.new(0.9, 0, 0, 30)
 stealTitle.Position = UDim2.new(0.05, 0, 0, 10)
 stealTitle.BackgroundTransparency = 1
-stealTitle.Text = "Steal All Bases"
+stealTitle.Text = "Steal & Destroy"
 stealTitle.TextColor3 = Color3.fromRGB(255, 150, 0)
 stealTitle.TextSize = 20
 stealTitle.Font = Enum.Font.GothamBold
 stealTitle.TextXAlignment = Enum.TextXAlignment.Center
 stealTitle.Parent = stealFrame
 
-local stealSub = Instance.new("TextLabel")
-stealSub.Size = UDim2.new(0.9, 0, 0, 20)
-stealSub.Position = UDim2.new(0.05, 0, 0, 45)
-stealSub.BackgroundTransparency = 1
-stealSub.Text = "Get all swords from every base instantly"
-stealSub.TextColor3 = Color3.fromRGB(150, 150, 150)
-stealSub.TextSize = 11
-stealSub.Font = Enum.Font.Gotham
-stealSub.TextXAlignment = Enum.TextXAlignment.Center
-stealSub.Parent = stealFrame
-
+-- Botao Steal All
 local stealButton = Instance.new("TextButton")
 stealButton.Name = "StealButton"
-stealButton.Size = UDim2.new(0.8, 0, 0, 70)
-stealButton.Position = UDim2.new(0.1, 0, 0, 90)
+stealButton.Size = UDim2.new(0.8, 0, 0, 50)
+stealButton.Position = UDim2.new(0.1, 0, 0, 55)
 stealButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 stealButton.Text = "STEAL ALL SWORDS"
 stealButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-stealButton.TextSize = 16
+stealButton.TextSize = 15
 stealButton.Font = Enum.Font.GothamBold
 stealButton.Parent = stealFrame
 
 local stealBtnCorner = Instance.new("UICorner")
-stealBtnCorner.CornerRadius = UDim.new(0, 14)
+stealBtnCorner.CornerRadius = UDim.new(0, 12)
 stealBtnCorner.Parent = stealButton
 
+-- Botao Delete Security
+local deleteSecurityButton = Instance.new("TextButton")
+deleteSecurityButton.Name = "DeleteSecurity"
+deleteSecurityButton.Size = UDim2.new(0.8, 0, 0, 50)
+deleteSecurityButton.Position = UDim2.new(0.1, 0, 0, 120)
+deleteSecurityButton.BackgroundColor3 = Color3.fromRGB(180, 30, 180)
+deleteSecurityButton.Text = "DELETE ALL SECURITY"
+deleteSecurityButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+deleteSecurityButton.TextSize = 15
+deleteSecurityButton.Font = Enum.Font.GothamBold
+deleteSecurityButton.Parent = stealFrame
+
+local deleteSecCorner = Instance.new("UICorner")
+deleteSecCorner.CornerRadius = UDim.new(0, 12)
+deleteSecCorner.Parent = deleteSecurityButton
+
+-- Resultados
 local stealResult = Instance.new("TextLabel")
-stealResult.Size = UDim2.new(0.9, 0, 0, 50)
-stealResult.Position = UDim2.new(0.05, 0, 0, 180)
+stealResult.Size = UDim2.new(0.9, 0, 0, 40)
+stealResult.Position = UDim2.new(0.05, 0, 0, 185)
 stealResult.BackgroundTransparency = 1
-stealResult.Text = "Click to steal all swords\nfrom all bases!"
+stealResult.Text = "Click buttons above to execute"
 stealResult.TextColor3 = Color3.fromRGB(150, 150, 150)
-stealResult.TextSize = 12
+stealResult.TextSize = 11
 stealResult.Font = Enum.Font.Gotham
 stealResult.TextWrapped = true
 stealResult.TextXAlignment = Enum.TextXAlignment.Center
 stealResult.Parent = stealFrame
 
 local stealInfo = Instance.new("TextLabel")
-stealInfo.Size = UDim2.new(0.9, 0, 0, 50)
-stealInfo.Position = UDim2.new(0.05, 0, 0, 250)
+stealInfo.Size = UDim2.new(0.9, 0, 0, 60)
+stealInfo.Position = UDim2.new(0.05, 0, 0, 240)
 stealInfo.BackgroundTransparency = 1
-stealInfo.Text = "This will activate all Giver parts\nfrom every base via TouchInterest"
+stealInfo.Text = "Steal All: Activates all Giver parts from every base\nDelete Security: Removes all Lasers from OwnerOnlyDoor in every base"
 stealInfo.TextColor3 = Color3.fromRGB(100, 100, 100)
 stealInfo.TextSize = 10
 stealInfo.Font = Enum.Font.Gotham
@@ -506,10 +468,10 @@ local function getTycoonsSub()
 end
 
 -- ============================================
--- FUNCAO AUTO GIVER
+-- FUNCAO AUTO ALL (FAZ TUDO EM 1)
 -- ============================================
-local function autoGiver()
-    if not autoGiverActive then return end
+local function autoAll()
+    if not autoAllActive then return end
     local char = player.Character
     if not char then return end
     local hrp = char:FindFirstChild("HumanoidRootPart")
@@ -519,7 +481,9 @@ local function autoGiver()
     if not tycoonsSub then return end
 
     for _, base in pairs(tycoonsSub:GetChildren()) do
-        if not autoGiverActive then break end
+        if not autoAllActive then break end
+
+        -- 1. COLETAR DINHEIRO (Giver)
         local essentials = base:FindFirstChild("Essentials")
         if essentials then
             local giver = essentials:FindFirstChild("Giver")
@@ -528,24 +492,12 @@ local function autoGiver()
                 if giverPart and giverPart:IsA("BasePart") then
                     fireTouch(giverPart)
                     totalMoney = totalMoney + 1
-                    giverStatus.Text = "Money collected: " .. totalMoney
                 end
             end
         end
-        task.wait(0.1)
-    end
-end
+        task.wait(0.05)
 
--- ============================================
--- FUNCAO AUTO CLICKER
--- ============================================
-local function autoClicker()
-    if not autoClickerActive then return end
-    local tycoonsSub = getTycoonsSub()
-    if not tycoonsSub then return end
-
-    for _, base in pairs(tycoonsSub:GetChildren()) do
-        if not autoClickerActive then break end
+        -- 2. MINERAR (Clicker via ClickDetector)
         local purchasedObjects = base:FindFirstChild("PurchasedObjects")
         if purchasedObjects then
             local mine = purchasedObjects:FindFirstChild("Mine")
@@ -562,37 +514,27 @@ local function autoClicker()
                 end
             end
         end
-        task.wait(0.1)
-    end
-end
+        task.wait(0.05)
 
--- ============================================
--- FUNCAO AUTO BUILD
--- ============================================
-local function autoBuild()
-    if not autoBuildActive then return end
-    local tycoonsSub = getTycoonsSub()
-    if not tycoonsSub then return end
-
-    for _, base in pairs(tycoonsSub:GetChildren()) do
-        if not autoBuildActive then break end
+        -- 3. CONSTRUIR (Botões vermelhos Head)
         local buttons = base:FindFirstChild("Buttons")
         if buttons then
             for _, btnFolder in pairs(buttons:GetChildren()) do
-                if not autoBuildActive then break end
+                if not autoAllActive then break end
                 local head = btnFolder:FindFirstChild("Head")
                 if head and head:IsA("BasePart") then
                     if isRedButton(head) then
                         fireTouch(head)
                         itemsBought = itemsBought + 1
-                        buildStatus.Text = "Items bought: " .. itemsBought
                     end
                 end
-                task.wait(0.05)
+                task.wait(0.03)
             end
         end
-        task.wait(0.2)
+        task.wait(0.1)
     end
+
+    autoAllStatus.Text = "Money: " .. totalMoney .. " | Items: " .. itemsBought
 end
 
 -- ============================================
@@ -631,6 +573,34 @@ local function stealAll()
     end
 
     return totalSwords, activated, totalBases
+end
+
+-- ============================================
+-- FUNCAO DELETE ALL SECURITY (LASERS)
+-- ============================================
+local function deleteAllSecurity()
+    local tycoonsSub = getTycoonsSub()
+    if not tycoonsSub then return 0 end
+
+    local deletedCount = 0
+
+    for _, base in pairs(tycoonsSub:GetChildren()) do
+        local purchasedObjects = base:FindFirstChild("PurchasedObjects")
+        if purchasedObjects then
+            local ownerOnlyDoor = purchasedObjects:FindFirstChild("OwnerOnlyDoor")
+            if ownerOnlyDoor then
+                local lasers = ownerOnlyDoor:FindFirstChild("Lasers")
+                if lasers then
+                    pcall(function()
+                        lasers:Destroy()
+                        deletedCount = deletedCount + 1
+                    end)
+                end
+            end
+        end
+    end
+
+    return deletedCount
 end
 
 -- ============================================
@@ -823,74 +793,30 @@ end
 homeButton.MouseButton1Click:Connect(toggleScreen)
 
 -- ============================================
--- CONEXOES DOS BOTOES - AUTO FARM
+-- CONEXOES DOS BOTOES - AUTO ALL
 -- ============================================
-local giverConnection = nil
-local clickerConnection = nil
-local buildConnection = nil
+local autoAllConnection = nil
 
-giverToggle.MouseButton1Click:Connect(function()
-    autoGiverActive = not autoGiverActive
-    if autoGiverActive then
-        giverToggle.BackgroundColor3 = Color3.fromRGB(0, 180, 60)
-        giverToggle.Text = "Auto Giver: ON"
-        giverStatus.Text = "Collecting..."
-        giverStatus.TextColor3 = Color3.fromRGB(0, 255, 100)
-        if giverConnection then giverConnection:Disconnect() end
-        giverConnection = RunService.Heartbeat:Connect(function()
-            if autoGiverActive then
-                autoGiver()
-                task.wait(0.5)
-            end
-        end)
-    else
-        giverToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
-        giverToggle.Text = "Auto Giver: OFF"
-        giverStatus.Text = "Money collected: " .. totalMoney
-        giverStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-        if giverConnection then giverConnection:Disconnect() giverConnection = nil end
-    end
-end)
-
-clickerToggle.MouseButton1Click:Connect(function()
-    autoClickerActive = not autoClickerActive
-    if autoClickerActive then
-        clickerToggle.BackgroundColor3 = Color3.fromRGB(0, 180, 60)
-        clickerToggle.Text = "Auto Clicker: ON"
-        if clickerConnection then clickerConnection:Disconnect() end
-        clickerConnection = RunService.Heartbeat:Connect(function()
-            if autoClickerActive then
-                autoClicker()
+autoAllToggle.MouseButton1Click:Connect(function()
+    autoAllActive = not autoAllActive
+    if autoAllActive then
+        autoAllToggle.BackgroundColor3 = Color3.fromRGB(0, 180, 60)
+        autoAllToggle.Text = "AUTO ALL: ON"
+        autoAllStatus.Text = "Running..."
+        autoAllStatus.TextColor3 = Color3.fromRGB(0, 255, 100)
+        if autoAllConnection then autoAllConnection:Disconnect() end
+        autoAllConnection = RunService.Heartbeat:Connect(function()
+            if autoAllActive then
+                autoAll()
                 task.wait(0.3)
             end
         end)
     else
-        clickerToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
-        clickerToggle.Text = "Auto Clicker: OFF"
-        if clickerConnection then clickerConnection:Disconnect() clickerConnection = nil end
-    end
-end)
-
-buildToggle.MouseButton1Click:Connect(function()
-    autoBuildActive = not autoBuildActive
-    if autoBuildActive then
-        buildToggle.BackgroundColor3 = Color3.fromRGB(0, 180, 60)
-        buildToggle.Text = "Auto Build: ON"
-        buildStatus.Text = "Building..."
-        buildStatus.TextColor3 = Color3.fromRGB(0, 255, 100)
-        if buildConnection then buildConnection:Disconnect() end
-        buildConnection = RunService.Heartbeat:Connect(function()
-            if autoBuildActive then
-                autoBuild()
-                task.wait(1)
-            end
-        end)
-    else
-        buildToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
-        buildToggle.Text = "Auto Build: OFF"
-        buildStatus.Text = "Items bought: " .. itemsBought
-        buildStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-        if buildConnection then buildConnection:Disconnect() buildConnection = nil end
+        autoAllToggle.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
+        autoAllToggle.Text = "AUTO ALL: OFF"
+        autoAllStatus.Text = "Money: " .. totalMoney .. " | Items: " .. itemsBought
+        autoAllStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
+        if autoAllConnection then autoAllConnection:Disconnect() autoAllConnection = nil end
     end
 end)
 
@@ -914,6 +840,28 @@ stealButton.MouseButton1Click:Connect(function()
 
     task.wait(0.3)
     stealButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+end)
+
+-- ============================================
+-- CONEXAO - DELETE SECURITY
+-- ============================================
+deleteSecurityButton.MouseButton1Click:Connect(function()
+    deleteSecurityButton.BackgroundColor3 = Color3.fromRGB(100, 40, 100)
+    stealResult.Text = "Deleting security..."
+    stealResult.TextColor3 = Color3.fromRGB(255, 200, 0)
+
+    local deleted = deleteAllSecurity()
+
+    if deleted > 0 then
+        stealResult.Text = "Deleted " .. deleted .. " laser security systems!"
+        stealResult.TextColor3 = Color3.fromRGB(0, 255, 100)
+    else
+        stealResult.Text = "No laser security found!"
+        stealResult.TextColor3 = Color3.fromRGB(255, 100, 100)
+    end
+
+    task.wait(0.3)
+    deleteSecurityButton.BackgroundColor3 = Color3.fromRGB(180, 30, 180)
 end)
 
 -- ============================================
@@ -1093,13 +1041,9 @@ end)
 -- FECHAR GUI
 -- ============================================
 closeButton.MouseButton1Click:Connect(function()
-    autoGiverActive = false
-    autoClickerActive = false
-    autoBuildActive = false
+    autoAllActive = false
     killAuraActive = false
-    if giverConnection then giverConnection:Disconnect() end
-    if clickerConnection then clickerConnection:Disconnect() end
-    if buildConnection then buildConnection:Disconnect() end
+    if autoAllConnection then autoAllConnection:Disconnect() end
     if auraConnection then auraConnection:Disconnect() end
     screenGui:Destroy()
 end)
@@ -1108,6 +1052,7 @@ end)
 -- INICIALIZAR
 -- ============================================
 updatePlayerList()
-print("BRBOX HUB - Auto Giver Edition loaded!")
-print("Screens: Kill Aura -> Auto Farm -> Steal All")
-print("Home button: Toggle between screens")
+print("BRBOX HUB - Auto Giver Edition v2 loaded!")
+print("Screens: Kill Aura -> Auto All -> Steal & Destroy")
+print("Auto All: 1 button does Giver + Clicker + Build")
+print("Delete Security: Removes Lasers from OwnerOnlyDoor")
